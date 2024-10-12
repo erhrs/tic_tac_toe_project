@@ -1,7 +1,7 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
+import 'package:tic_tac_toe_project/utils/custom_widgets.dart';
 
 class TicTacToeController extends GetxController {
   RxList<String> board = RxList.filled(9, '');
@@ -38,22 +38,7 @@ class TicTacToeController extends GetxController {
         result.value = 'Player ${board[combo[0]]} Wins!';
         gameOver.value = true;
         if(board[combo[0]]=='X'){
-          Get.dialog(
-            AlertDialog(
-              title:  Lottie.asset(
-                'assets/animations/Animation - 1728715686260.json',
-                width: 200,
-                height: 200,
-                fit: BoxFit.fill,
-                repeat: true,
-              ),
-            ),
-          );
-
-          // Close the dialog after 3 seconds
-          Future.delayed(const Duration(seconds: 3), () {
-            Get.back();
-          });
+          showWinningDialog();
         }
         return;
       }
@@ -79,7 +64,9 @@ class TicTacToeController extends GetxController {
   }
 
   void easyMove() {
-    print('Easy Move');
+    if (kDebugMode) {
+      print('Easy Move');
+    }
     var available = [];
     for (var i = 0; i < board.length; i++) {
       if (board[i] == '') {
@@ -93,8 +80,9 @@ class TicTacToeController extends GetxController {
   }
 
   void mediumMove() {
-    print('Medium Move');
-    // Try to block player if possible, otherwise random move
+    if (kDebugMode) {
+      print('Medium Move');
+    }
     for (var i = 0; i < board.length; i++) {
       if (board[i] == '') {
         board[i] = 'O';
@@ -109,7 +97,7 @@ class TicTacToeController extends GetxController {
         board[i] = '';
       }
     }
-    easyMove(); // Fallback to random move
+    easyMove();
   }
 
   bool checkIfWinner(String player) {
@@ -135,8 +123,9 @@ class TicTacToeController extends GetxController {
   }
 
   void hardMove() {
-    print('HARD Move');
-    // Implementing Minimax Algorithm for optimal moves
+    if (kDebugMode) {
+      print('HARD Move');
+    }
     int bestScore = -1000;
     int move = -1;
     for (int i = 0; i < board.length; i++) {
